@@ -1,3 +1,5 @@
+from asyncio.windows_events import NULL
+from optparse import Values
 import os
 import sys
 import random
@@ -24,15 +26,15 @@ import PySimpleGUI as sg
 #Criando as funções pertinentes...
 #
 def janela_inicio():
-    sg.theme('Dark Grey 13')
+    sg.theme('Dark Grey 10')
 
     layout = [
         [sg.Text('Escolha um número de 1 à 6')],
-        [sg.Text('Você:'), sg.Input(key=('voce'), size=(2,4)), sg.Button('CONFIRMA')],
-        [sg.Text('Computador:'), sg.Input(key=('comp'), size=(2, 4))],
+        [sg.Text('Você:'), sg.Combo(values=list(range(1, 7)), key='-VOCE-'), sg.Button('CONFIRMA')],
+        [sg.Text('Computador:'), sg.Multiline(key='-COMPUTADOR-', size=(2, 1))],
         [sg.Button('SORTEAR')],
         [sg.Text('Resultado:')],
-        [sg.Output(key=('saida'), size=(20, 5))],
+        [sg.Output(key='-OUTPUT-', size=(20, 5))],
         [sg.Button('REPETIR'), sg.Button('SAIR')]
     ]
     return sg.Window('JODO DE DADO', layout, finalize=True)
@@ -42,11 +44,19 @@ def janela_inicio():
 janela = janela_inicio()
 
 while True:
-    eventos, valores = janela.read()
-    if eventos == sg.WIN_CLOSED() or eventos == 'SAIR':
+    #Variáveis...
+    numeros_escolha = list(range(1, 6))
+    numeros_computador = random.randint(1, 6)
+    dado = random.randint(1, 6)
+    comp = values['-COMPUTADOR-']
+    
+    events, values = janela.read()
+    if events == 'SAIR' or events == sg.WIN_CLOSED():
         break
-    elif eventos == 'REPETIR':
+    elif events == 'REPETIR':
         janela.close()
         janela = janela_inicio()
-        
+    if events == 'CONFIRMA':
+        if values['-COMPUTADOR-'] == '':
+            print(numeros_computador)
 janela.close()
