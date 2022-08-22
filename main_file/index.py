@@ -1,7 +1,3 @@
-from asyncio.windows_events import NULL
-from optparse import Values
-import os
-import sys
 import random
 import PySimpleGUI as sg
 
@@ -31,8 +27,7 @@ def janela_inicio():
 
     layout = [
         [sg.Text('Escolha um número de 1 à 6')],
-        [sg.Text('Você:'), sg.Combo(values=list(range(1, 7)), key='-VOCE-'), sg.Button('CONFIRMA')],
-        [sg.Text('Computador:'), sg.Multiline(key='-COMPUTADOR-', size=(2, 1))],
+        [sg.Text('Você:'), sg.Combo(values=list(range(1, 7)), key='-VOCE-')],
         [sg.Button('SORTEAR')],
         [sg.Text('Resultado:')],
         [sg.Output(key='-OUTPUT-', size=(20, 5))],
@@ -42,22 +37,23 @@ def janela_inicio():
 
 #Condicionais....
 #
-janela = janela_inicio()
+window = janela_inicio()
+
 
 while True:
     #Variáveis...
-    numeros_escolha = list(range(1, 6))
-    numeros_computador = random.randint(1, 6)
-    dado = random.randint(1, 6)
-    comp = values['-COMPUTADOR-']
+    #numeros_permitidos = list(range(1, 7))
+    #seu_numero = values['-VOCE-']
+    #numeros_computador = random.randint(1, 6)
+    #dado = random.randint(1, 6)
     
-    events, values = janela.read()
+    events, values = window.read()
     if events == 'SAIR' or events == sg.WIN_CLOSED():
         break
     elif events == 'REPETIR':
-        janela.close()
-        janela = janela_inicio()
-    if events == 'CONFIRMA':
-        if values['-COMPUTADOR-'] == '':
-            print(numeros_computador)
-janela.close()
+        window.close()
+        window = janela_inicio()
+    #if events == 'SORTEAR':
+     #   if values['-VOCE-'] in numeros_permitidos:
+     #       print('Você escolheu o número {}'.format(seu_numero))
+window.close()
